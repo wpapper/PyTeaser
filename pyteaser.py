@@ -63,7 +63,7 @@ stopWords = [
 ideal = 20.0
 
 
-def SummarizeUrl(url):
+def SummarizeUrl(url, title=False):
     summaries = []
     try:
         article = grab_link(url)
@@ -78,7 +78,13 @@ def SummarizeUrl(url):
     text = str(article.cleaned_text.encode('utf-8', 'ignore'))
     title = str(article.title.encode('utf-8', 'ignore'))
     summaries = Summarize(title, text)
-    return summaries
+    if title is True:
+        return {'title': title, 'summaries': summaries}
+    else:
+        return summaries
+
+def SummarizeUrlWithTitle(url):
+    return SummarizeUrl(url, title=True)
 
 
 def Summarize(title, text):
@@ -212,7 +218,7 @@ def split_sentences(text):
     of the line. Now, the s_iter list is formatted correctly but it is missing the last item of the sentences list. The
     second to last line adds this item to the s_iter list and the last line returns the full list.
     '''
-    
+
     sentences = regex_split('(?<![A-Z])([.!?]"?)(?=\s+\"?[A-Z])', text)
     s_iter = zip(*[iter(sentences[:-1])] * 2)
     s_iter = [''.join(map(unicode,y)).lstrip() for y in s_iter]
