@@ -63,7 +63,7 @@ stopWords = [
 ideal = 20.0
 
 
-def SummarizeUrl(url, title=False):
+def SummarizeUrl(url, return_title=False):
     summaries = []
     try:
         article = grab_link(url)
@@ -78,13 +78,13 @@ def SummarizeUrl(url, title=False):
     text = str(article.cleaned_text.encode('utf-8', 'ignore'))
     title = str(article.title.encode('utf-8', 'ignore'))
     summaries = Summarize(title, text)
-    if title is True:
+    if return_title is True:
         return {'title': title, 'summaries': summaries}
     else:
         return summaries
 
 def SummarizeUrlWithTitle(url):
-    return SummarizeUrl(url, title=True)
+    return SummarizeUrl(url, return_title=True)
 
 
 def Summarize(title, text):
